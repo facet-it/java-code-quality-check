@@ -9,16 +9,18 @@ import java.nio.file.Path;
  */
 public class CodeBaseValidator {
 
-    private static final String codeDirectory = "/src/main/java";
-
     public void validateCodeBase(String codebasePath) {
+        if(codebasePath == null) {
+            throw new IllegalArgumentException("Codebase path cannot be null");
+        }
+
         isDirectory(codebasePath);
     }
 
     private void isDirectory(String codebasePath) {
         File path = Path.of(codebasePath).toFile();
         if (! path.isDirectory()) {
-            throw new IllegalArgumentException("Given path " + codebasePath + "  is not a directory");
+            throw new IllegalArgumentException("Given path " + codebasePath + " is not a directory");
         }
     }
 }
