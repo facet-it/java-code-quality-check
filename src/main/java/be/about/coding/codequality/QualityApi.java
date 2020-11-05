@@ -6,23 +6,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
+import be.about.coding.codequality.check.CodebaseCheck;
 import be.about.coding.codequality.persistence.QualityRepository;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("codebases/")
+@RequestMapping("/codebases")
 @AllArgsConstructor
 public class QualityApi {
 
     private QualityRepository qualityRepository;
+    private CodebaseCheck codebaseCheck;
 
     @PostMapping()
-    public ResponseEntity startQualityCheckFor(String codebasePath, String codebaseName) {
+    public ResponseEntity<Map<String, Map<String, List<String>>>> startQualityCheckFor(String codebasePath, String codebaseName) {
         CodeBaseValidator validator = new CodeBaseValidator();
         validator.validateCodeBase(codebasePath);
 
-        qualityRepository.addCodebase(codebasePath);
+        qualityRepository.addCodebase(codebaseName);
+        codebaseCheck.startCodebaseCheck(codebasePath, codebaseName);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(qualityRepository.getRegistry(), HttpStatus.OK);
     }
 }

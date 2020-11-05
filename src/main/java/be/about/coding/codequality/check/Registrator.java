@@ -21,21 +21,31 @@ class Registrator {
     //recursive method, i think this is the best way of registering
     public void register(String codebase, File currentPackage) {
         if (currentPackage.list() != null) {
-            String[] files = currentPackage.list();
+            File[] files = currentPackage.listFiles();
 
-            Stream.of(files).map(File::new)
-                .filter(File::isFile)
-                .forEach(file -> {
-                    repository.addClassFor(codebase, currentPackage.getAbsolutePath(), file.getAbsolutePath());
-                });
+            registerActualFiles(codebase, currentPackage, files);
 
-            List<File> directories = Stream.of(files).map(File::new)
+            List<File> directories = Stream.of(files)
                 .filter(File::isDirectory)
                 .collect(Collectors.toList());
 
-            for(File directory :directories) {
+            for (File directory : directories) {
                 register(codebase, directory);
             }
+        }
+    }
+
+    private void registerActualFiles(String codebase, File currentPackage, File[] fileList) {
+        List<File> actualFiles = Stream.of(fileList)
+            .filter(File::isFile)
+            .collect(Collectors.toList());
+
+        if (!actualFiles.isEmpty()) {
+            repository.addPackageFor(codebase, currentPackage.getAbsolutePath());
+        }
+
+        for (File file : actualFiles) {
+            repository.addClassFor(codebase, currentPackage.getAbsolutePath(), file.getAbsolutePath());
         }
     }
 

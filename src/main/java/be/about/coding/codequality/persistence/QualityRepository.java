@@ -28,10 +28,9 @@ public class QualityRepository {
     public void addPackageFor(String codebase, String packageName) {
         validateCodebase(codebase);
 
-        List<String> classList = new LinkedList<>();
-        Map<String, List<String>> packageRegistryForCodebase = new HashMap<>();
-        packageRegistryForCodebase.put(packageName, classList);
-        registry.put(codebase, packageRegistryForCodebase);
+        //ComputeIfAbsent the result of the mapping function will be placed in the hashmap
+        Map<String, List<String>> packageRegistryFor = registry.computeIfAbsent(codebase, key -> new HashMap<>());
+        packageRegistryFor.put(packageName, new LinkedList<>());
     }
 
     public void addClassFor(String codebase, String packageName, String className) {
@@ -45,5 +44,9 @@ public class QualityRepository {
         if (!checkStatuses.containsKey(codebase)) {
             throw new IllegalArgumentException("Codebase " + codebase + " is unknown to the system. Cannot update status");
         }
+    }
+
+    public Map<String, Map<String, List<String>>> getRegistry() {
+        return this.registry;
     }
 }
