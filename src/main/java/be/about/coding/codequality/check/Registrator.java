@@ -36,8 +36,11 @@ class Registrator {
     }
 
     private void registerActualFiles(String codebase, File currentPackage, File[] fileList) {
+        //only interested in .java file atm
+        String fileType = ".java";
         List<File> actualFiles = Stream.of(fileList)
             .filter(File::isFile)
+            .filter(file -> file.getName().endsWith(fileType))
             .collect(Collectors.toList());
 
         if (!actualFiles.isEmpty()) {
