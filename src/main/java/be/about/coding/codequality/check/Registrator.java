@@ -1,6 +1,5 @@
 package be.about.coding.codequality.check;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -12,7 +11,6 @@ import be.about.coding.codequality.persistence.QualityRepository;
 import lombok.AllArgsConstructor;
 
 @Component
-@Scope(scopeName = "prototype")
 @AllArgsConstructor
 class Registrator {
 
