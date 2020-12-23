@@ -15,7 +15,7 @@ import java.util.Map;
 
 import be.about.coding.codequality.dependency.CodebaseCheck;
 import be.about.coding.codequality.check.feature.DependencyAnalysis;
-import be.about.coding.codequality.persistence.QualityRepository;
+import be.about.coding.codequality.persistence.memory.QualityRepository;
 import lombok.AllArgsConstructor;
 
 @RestController

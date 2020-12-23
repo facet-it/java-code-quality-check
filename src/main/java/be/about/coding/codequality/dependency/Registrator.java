@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import be.about.coding.codequality.persistence.QualityRepository;
+import be.about.coding.codequality.persistence.memory.QualityRepository;
 import lombok.AllArgsConstructor;
 
 @Component

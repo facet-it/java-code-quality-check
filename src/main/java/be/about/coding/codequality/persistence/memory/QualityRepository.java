@@ -1,4 +1,4 @@
-package be.about.coding.codequality.persistence;
+package be.about.coding.codequality.persistence.memory;
 
 import org.springframework.stereotype.Component;
 
