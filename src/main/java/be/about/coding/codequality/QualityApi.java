@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import be.about.coding.codequality.check.CodebaseCheck;
+import be.about.coding.codequality.dependency.CodebaseCheck;
 import be.about.coding.codequality.check.feature.DependencyAnalysis;
 import be.about.coding.codequality.persistence.QualityRepository;
 import lombok.AllArgsConstructor;

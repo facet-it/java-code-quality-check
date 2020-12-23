@@ -1,4 +1,4 @@
-package be.about.coding.codequality.check;
+package be.about.coding.codequality.dependency;
 
 import org.springframework.stereotype.Component;
 

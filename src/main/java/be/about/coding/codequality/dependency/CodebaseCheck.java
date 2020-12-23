@@ -1,12 +1,10 @@
-package be.about.coding.codequality.check;
+package be.about.coding.codequality.dependency;
 
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Path;
 
-import be.about.coding.codequality.ControlStatus;
-import be.about.coding.codequality.persistence.QualityRepository;
 import lombok.AllArgsConstructor;
 
 /**
@@ -27,12 +25,9 @@ public class CodebaseCheck {
 
     private static String CODE_BASE_DIRECTORY = "src/main/java";
 
-    private QualityRepository repository;
     private Registrator registrator;
 
     public void startCodebaseCheck(String codebasePath, String codebaseName) {
-        //update status of the codebase check
-        repository.updateStatus(codebaseName, ControlStatus.REGISTERING);
 
         File startDirectory = Path.of(codebasePath, CODE_BASE_DIRECTORY).toFile();
         registrator.register(codebaseName, startDirectory);
