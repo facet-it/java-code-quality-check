@@ -26,11 +26,13 @@ public class CodebaseCheck {
     private static String CODE_BASE_DIRECTORY = "src/main/java";
 
     private Registrator registrator;
+    private CodebaseSnapshot snapshot;
 
     public void startCodebaseCheck(String codebasePath, String codebaseName) {
 
         File startDirectory = Path.of(codebasePath, CODE_BASE_DIRECTORY).toFile();
         registrator.register(codebaseName, startDirectory);
+        snapshot.make(codebaseName);
     }
 
 }

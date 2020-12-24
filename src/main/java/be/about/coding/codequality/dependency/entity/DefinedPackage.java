@@ -1,5 +1,8 @@
 package be.about.coding.codequality.dependency.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,10 +17,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "package")
 @Data
+@NoArgsConstructor
 public class DefinedPackage {
     
     @Id
@@ -27,14 +32,14 @@ public class DefinedPackage {
     @Column(name="name")
     private String name;
 
-    @Column(name="codebasename")
-    private String codebaseName;
+    @OneToMany(mappedBy = "myPackage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<DefinedClass> classes = new LinkedList<>();
 
-    @OneToMany(mappedBy = "myPackage", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private List<DefinedClass> classes;
-
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JsonIgnoreProperties({"packages"})
     private DependencyAnalysis analysis;
     
-
+    public DefinedPackage(String name) {
+        this.name = name;
+    }
 }

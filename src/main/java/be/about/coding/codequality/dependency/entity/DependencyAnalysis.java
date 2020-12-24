@@ -1,5 +1,6 @@
 package be.about.coding.codequality.dependency.entity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,10 +14,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "dependency_analysis")
 @Data
+@NoArgsConstructor
 public class DependencyAnalysis {
 
     @Id
@@ -24,14 +27,15 @@ public class DependencyAnalysis {
     private long id;
 
     @Column(name = "timestamp")
-    private long timestamp;
+    private long timestamp = System.currentTimeMillis();
 
     @Column(name="codebase")
     private String codebase;
 
-    @OneToMany(mappedBy = "analysis", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private List<DefinedPackage> packages;
+    @OneToMany(mappedBy = "analysis", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<DefinedPackage> packages = new LinkedList<>();
 
-
-
+    public DependencyAnalysis(String codebase) {
+        this.codebase = codebase;
+    }
 }
