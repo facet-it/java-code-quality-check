@@ -26,7 +26,7 @@ public class CodebaseCheck {
     private static String CODE_BASE_DIRECTORY = "src/main/java";
 
     private Registrator registrator;
-    private CodebaseSnapshot snapshot;
+    private Snapshot snapshot;
 
     public void startCodebaseCheck(String codebasePath, String codebaseName) {
 

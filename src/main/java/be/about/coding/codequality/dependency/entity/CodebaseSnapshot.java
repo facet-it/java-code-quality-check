@@ -1,5 +1,6 @@
 package be.about.coding.codequality.dependency.entity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,28 +14,30 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "dependency_analysis")
+@Table(name="codebase_snapshot")
 @Data
-@NoArgsConstructor
-public class DependencyAnalysis {
+public class CodebaseSnapshot {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "timestamp")
     private long timestamp = System.currentTimeMillis();
 
+    @OneToMany(mappedBy = "snapshot", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<DefinedPackage> packages = new LinkedList<>();
+
     @Column(name="codebase")
     private String codebase;
 
-    @OneToMany(mappedBy = "analysis", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dependency> dependencies;
+    @Column(name="analysis_id")
+    private long analysisId;
 
-    public DependencyAnalysis(String codebase) {
+    public CodebaseSnapshot(String codebase) {
         this.codebase = codebase;
     }
+
 }

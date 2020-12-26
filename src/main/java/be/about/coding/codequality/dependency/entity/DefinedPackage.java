@@ -37,7 +37,7 @@ public class DefinedPackage {
 
     @ManyToOne(optional = false)
     @JsonIgnoreProperties({"packages"})
-    private DependencyAnalysis analysis;
+    private CodebaseSnapshot snapshot;
     
     public DefinedPackage(String name) {
         this.name = name;
