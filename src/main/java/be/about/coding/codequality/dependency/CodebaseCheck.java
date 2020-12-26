@@ -1,5 +1,6 @@
 package be.about.coding.codequality.dependency;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -27,13 +28,14 @@ public class CodebaseCheck {
 
     private static String CODE_BASE_DIRECTORY = "src/main/java";
 
-    private Registrator registrator;
-    private Snapshot snapshot;
+    private ObjectFactory<Registrator> registratorFactory;
 
-    public void startCodebaseCheck(String codebasePath, String codebaseName) {
-
+    public Map<String, List<String>> startCodebaseCheck(String codebasePath, String codebaseName) {
+        Registrator registrator = registratorFactory.getObject();
         File startDirectory = Path.of(codebasePath, CODE_BASE_DIRECTORY).toFile();
         Map<String, List<String>> registry = registrator.register(codebaseName, startDirectory);
+
+        return registry;
     }
 
 }

@@ -33,9 +33,9 @@ public class QualityApi {
         validator.validateCodeBase(codebasePath);
 
         qualityRepository.addCodebase(codebaseName);
-        codebaseCheck.startCodebaseCheck(codebasePath, codebaseName);
+        Map<String, List<String>> registry = codebaseCheck.startCodebaseCheck(codebasePath, codebaseName);
 
-        return new ResponseEntity(qualityRepository.getRegistry(), HttpStatus.OK);
+        return new ResponseEntity(registry, HttpStatus.OK);
     }
 
     @GetMapping("/")
