@@ -1,6 +1,5 @@
 package be.about.coding.codequality.dependency;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,25 +11,17 @@ import javax.transaction.Transactional;
 import be.about.coding.codequality.dependency.entity.CodebaseSnapshot;
 import be.about.coding.codequality.dependency.entity.DefinedClass;
 import be.about.coding.codequality.dependency.entity.DefinedPackage;
-import be.about.coding.codequality.persistence.dependency.DependencyAnalysisRepository;
-import be.about.coding.codequality.persistence.memory.QualityRepository;
+import be.about.coding.codequality.persistence.dependency.CodebaseSnapshotRepository;
+import lombok.AllArgsConstructor;
 
 @Component
+@AllArgsConstructor
 public class Snapshot {
 
-    private QualityRepository inMemorySnapshot;
-    private DependencyAnalysisRepository analysisRepository;
-
-    @Autowired
-    public Snapshot(QualityRepository inMemorySnapshot, DependencyAnalysisRepository analysisRepository) {
-        this.inMemorySnapshot = inMemorySnapshot;
-        this.analysisRepository = analysisRepository;
-    }
+    private CodebaseSnapshotRepository snapshotRepository;
 
     @Transactional
-    public void make(String codebase) {
-        Map<String, List<String>> codebaseRegistery = inMemorySnapshot.getRegistry().get(codebase);
-
+    public void make(String codebase, Map<String, List<String>> codebaseRegistery) {
         CodebaseSnapshot snapshot = new CodebaseSnapshot(codebase);
 
         for(String packagename : codebaseRegistery.keySet()) {
@@ -46,7 +37,7 @@ public class Snapshot {
             snapshot.getPackages().add(definedPackage);
         }
 
-        //analysisRepository.saveAndFlush(snapshot);
+        snapshotRepository.saveAndFlush(snapshot);
     }
 
 }

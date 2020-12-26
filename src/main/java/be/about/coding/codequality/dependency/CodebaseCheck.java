@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 
@@ -31,8 +33,7 @@ public class CodebaseCheck {
     public void startCodebaseCheck(String codebasePath, String codebaseName) {
 
         File startDirectory = Path.of(codebasePath, CODE_BASE_DIRECTORY).toFile();
-        registrator.register(codebaseName, startDirectory);
-        snapshot.make(codebaseName);
+        Map<String, List<String>> registry = registrator.register(codebaseName, startDirectory);
     }
 
 }

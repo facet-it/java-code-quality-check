@@ -45,7 +45,7 @@ public class DefinedClass {
 
     private String parseFullName(String fullName) {
         String parsedFullName = fullName;
-        if(fullName != null && this.fullName.contains(ROOT_PACKAGE)) {
+        if(fullName != null && fullName.contains(ROOT_PACKAGE)) {
             String[] parts = fullName.split(ROOT_PACKAGE);
             parsedFullName = parts[1];
         }
