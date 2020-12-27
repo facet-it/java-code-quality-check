@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+import be.about.coding.codequality.dependency.entity.DependencyAnalysis;
 import lombok.AllArgsConstructor;
 
 /**
@@ -29,13 +30,17 @@ public class CodebaseCheck {
     private static String CODE_BASE_DIRECTORY = "src/main/java";
 
     private ObjectFactory<Registrator> registratorFactory;
+    private ObjectFactory<DependencyAnalyser> analyserFactory;
 
-    public Map<String, List<String>> startCodebaseCheck(String codebasePath, String codebaseName) {
+    public DependencyAnalysis startCodebaseCheck(String codebasePath, String codebaseName) {
         Registrator registrator = registratorFactory.getObject();
         File startDirectory = Path.of(codebasePath, CODE_BASE_DIRECTORY).toFile();
         Map<String, List<String>> registry = registrator.register(codebaseName, startDirectory);
 
-        return registry;
+        DependencyAnalyser analyser = analyserFactory.getObject();
+        DependencyAnalysis analysis = analyser.start(codebaseName, registry);
+
+        return analysis;
     }
 
 }

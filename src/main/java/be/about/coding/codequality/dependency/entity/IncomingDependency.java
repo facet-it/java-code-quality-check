@@ -5,13 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="incomingdependency")
 @Data
+@NoArgsConstructor
 public class IncomingDependency {
 
     @Id
@@ -24,6 +27,12 @@ public class IncomingDependency {
     @Column(name="current")
     private String current;
 
-    @Column(name="analysis_id")
-    private long analysisId;
+    @ManyToOne
+    private DependencyAnalysis analysis;
+
+    public IncomingDependency(String current, String incoming, DependencyAnalysis analysis) {
+        this.current = current;
+        this.incoming = incoming;
+        this.analysis = analysis;
+    }
 }

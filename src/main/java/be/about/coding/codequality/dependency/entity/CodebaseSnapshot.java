@@ -33,9 +33,6 @@ public class CodebaseSnapshot {
     @Column(name="codebase")
     private String codebase;
 
-    @Column(name="analysis_id")
-    private long analysisId;
-
     public CodebaseSnapshot(String codebase) {
         this.codebase = codebase;
     }

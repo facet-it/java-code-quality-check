@@ -11,10 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="dependency")
 @Data
+@NoArgsConstructor
 public class Dependency {
 
     @Id
@@ -30,5 +32,10 @@ public class Dependency {
     @ManyToOne
     @JsonIgnoreProperties({"dependencies"})
     private DependencyAnalysis analysis;
+
+    public Dependency(String source, String target) {
+        this.source = source;
+        this.target = target;
+    }
 
 }

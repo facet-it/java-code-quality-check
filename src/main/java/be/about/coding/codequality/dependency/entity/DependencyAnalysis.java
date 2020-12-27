@@ -1,5 +1,6 @@
 package be.about.coding.codequality.dependency.entity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -32,9 +33,14 @@ public class DependencyAnalysis {
     private String codebase;
 
     @OneToMany(mappedBy = "analysis", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dependency> dependencies;
+    private List<Dependency> dependencies = new LinkedList<>();
 
     public DependencyAnalysis(String codebase) {
         this.codebase = codebase;
+    }
+
+    public void addDependency(Dependency dependency) {
+        dependency.setAnalysis(this);
+        this.dependencies.add(dependency);
     }
 }

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -24,7 +25,13 @@ public class OutgoingDependency {
     @Column(name="current")
     private String current;
 
-    @Column(name="analysis_id")
-    private long analysisId;
+    @ManyToOne
+    private DependencyAnalysis analysis;
+
+    public OutgoingDependency(String current, String outgoing, DependencyAnalysis analysis) {
+        this.current = current;
+        this.outgoing = outgoing;
+        this.analysis = analysis;
+    }
 
 }
