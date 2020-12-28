@@ -10,13 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name="dependency")
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class Dependency {
 
     @Id
