@@ -17,6 +17,8 @@ import be.about.coding.codequality.dependency.entity.Dependency;
 class DependencyExtraction {
 
     private static final String ROOT_PACKAGE = "src/main/java/";
+    private static final String LANGUAGE_FILE_SUFFIX = ".java";
+
 
     private String currentClass;
     private File target;
@@ -33,7 +35,7 @@ class DependencyExtraction {
             String[] parts = target.split(ROOT_PACKAGE);
             String targetDirectory = parts[1];
 
-            currentClass = targetDirectory.replace("/", ".");
+            currentClass = targetDirectory.replace("/", ".").replace(LANGUAGE_FILE_SUFFIX, "");
         } else {
             currentClass = target;
         }

@@ -45,8 +45,8 @@ class DependencyAnalyser {
         for (String currentPackage : registry.keySet()) {
             List<String> classes = registry.get(currentPackage);
 
-            for (String currentClass : classes) {
-                DependencyExtraction extraction = new DependencyExtraction(currentClass);
+            for (String currentClassFile : classes) {
+                DependencyExtraction extraction = new DependencyExtraction(currentClassFile);
                 List<Dependency> dependencies = extraction.extract();
 
                 dependencies.forEach(dependency -> {
