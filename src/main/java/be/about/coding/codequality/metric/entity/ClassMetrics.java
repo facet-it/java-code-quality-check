@@ -1,8 +1,11 @@
-package be.about.coding.codequality.check.entity;
+package be.about.coding.codequality.metric.entity;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Getter;
+
+@Getter
 public class ClassMetrics {
 
     private Map<String, Object> metrics = new HashMap<>();

@@ -1,4 +1,4 @@
-package be.about.coding.codequality.check;
+package be.about.coding.codequality.metric;
 
 public class Testclass {
 
@@ -15,6 +15,10 @@ public class Testclass {
     }
 
     static {}
+
+    private int blabal;public void getBlbalb() {
+
+    }
 
     void sometingElse() {
     }
