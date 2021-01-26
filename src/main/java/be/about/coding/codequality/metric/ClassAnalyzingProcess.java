@@ -32,6 +32,7 @@ public class ClassAnalyzingProcess {
             BufferedReader classReader = new BufferedReader(new FileReader(classFile));
             String line = classReader.readLine();
             while (line != null) {
+                line += "\n";
                 //This action is not really on its place here, but ok...
                 lineCount++;
                 analyseLine(line);
@@ -61,8 +62,7 @@ public class ClassAnalyzingProcess {
     }
 
     private void analyseLine(String line) {
-        //String trimmedLine = line.trim();
-        String trimmedLine = line.replaceFirst("\\s++$","");
+        String trimmedLine = line.trim();
         char[] characters = trimmedLine.toCharArray();
         for (char character : characters) {
             notifyAnalysers(character);

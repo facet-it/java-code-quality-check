@@ -1,7 +1,8 @@
 package be.about.coding.codequality.metric;
 
-public class Testclass {
+import lombok.Getter;
 
+public class Testclass {
 
     public void something
         ()
@@ -15,6 +16,8 @@ public class Testclass {
     }
 
     static {}
+    public
+    void haha(){int a = 0;}
 
     private int blabal;public void getBlbalb() {
 

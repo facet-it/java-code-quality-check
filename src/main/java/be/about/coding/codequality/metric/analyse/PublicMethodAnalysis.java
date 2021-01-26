@@ -26,7 +26,7 @@ public class PublicMethodAnalysis implements AnalysisListener {
     private final int KEYWORD_REACHED = 1;
     private final int PARAMETERS_REACHED = 2;
 
-    private int currentStatus = 0;
+    private int currentStatus = BUILDING_KEYWORD;
 
     private final List<String> result = new LinkedList<>();
 
@@ -49,9 +49,19 @@ public class PublicMethodAnalysis implements AnalysisListener {
         if (resetCharacters.contains(current)) {
             sequencer = new StringBuilder();
         } else {
-            sequencer.append(current);
-            if (sequencer.toString().equals(PUBLIC_KEYWORD)) {
-                currentStatus = KEYWORD_REACHED;
+            if (current.toString().equals("\n")) {
+                sequencer.append(" ");
+                if (sequencer.toString().equals(PUBLIC_KEYWORD)) {
+                    currentStatus = KEYWORD_REACHED;
+                } else {
+                    sequencer = new StringBuilder();
+                }
+            }
+            else {
+                sequencer.append(current);
+                if (sequencer.toString().equals(PUBLIC_KEYWORD)) {
+                    currentStatus = KEYWORD_REACHED;
+                }
             }
         }
     }
@@ -59,6 +69,7 @@ public class PublicMethodAnalysis implements AnalysisListener {
     private void checkForParameterStart(Character current) {
         if (resetCharacters.contains(current)) {
             sequencer = new StringBuilder();
+            currentStatus = BUILDING_KEYWORD;
         } else {
             sequencer.append(current);
             if (current.equals('(')) {
@@ -70,6 +81,7 @@ public class PublicMethodAnalysis implements AnalysisListener {
     private void checkForParameterEnd(Character current) {
         if (resetCharacters.contains(current)) {
             sequencer = new StringBuilder();
+            currentStatus = BUILDING_KEYWORD;
         } else {
             sequencer.append(current);
             if (current.equals(')')) {
@@ -78,11 +90,6 @@ public class PublicMethodAnalysis implements AnalysisListener {
                 result.add(sequencer.toString());
             }
         }
-    }
-
-    private boolean shouldResetSequencer(Character current) {
-        //todo fill this
-        return false;
     }
 
     @Override
