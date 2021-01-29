@@ -3,10 +3,8 @@ package be.about.coding.codequality.metric.analyse;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Going to try and implement some kind of state machine.
@@ -17,16 +15,17 @@ public class PublicMethodAnalysis implements AnalysisListener {
 
     //the space is important, because you might have false positives on public
     private final String PUBLIC_KEYWORD = "public ";
+    private final Character OPEN_PARENTHESIS = '(';
+    private final Character CLOSE_PARENTHESIS = ')';
+
+    private final LinkedList<Character> paranthesisStack = new LinkedList<>();
+
     private final List<Character> resetCharacters = List.of('=', ';', '{', '}');
 
     private StringBuilder sequencer = new StringBuilder();
     private int count = 0;
 
-    private final int BUILDING_KEYWORD = 0;
-    private final int KEYWORD_REACHED = 1;
-    private final int PARAMETERS_REACHED = 2;
-
-    private int currentStatus = BUILDING_KEYWORD;
+    private AnalysisStatus currentStatus = AnalysisStatus.BUILDING_KEYWORD;
 
     private final List<String> result = new LinkedList<>();
 
@@ -46,48 +45,53 @@ public class PublicMethodAnalysis implements AnalysisListener {
     }
 
     private void buildKeyword(Character current) {
-        if (resetCharacters.contains(current)) {
+        if (currentStatus.needsToReset(current)) {
             sequencer = new StringBuilder();
-        } else {
+        }
+        else {
             if (current.toString().equals("\n")) {
-                sequencer.append(" ");
-                if (sequencer.toString().equals(PUBLIC_KEYWORD)) {
-                    currentStatus = KEYWORD_REACHED;
-                } else {
-                    sequencer = new StringBuilder();
-                }
+                current = ' ';
             }
-            else {
-                sequencer.append(current);
-                if (sequencer.toString().equals(PUBLIC_KEYWORD)) {
-                    currentStatus = KEYWORD_REACHED;
-                }
+            sequencer.append(current);
+            if (sequencer.toString().contains(PUBLIC_KEYWORD)) {
+                int indexOfKeyword = sequencer.toString().indexOf(PUBLIC_KEYWORD);
+                sequencer = new StringBuilder(sequencer.substring(indexOfKeyword));
+                currentStatus = AnalysisStatus.KEYWORD_REACHED;
             }
         }
     }
 
     private void checkForParameterStart(Character current) {
-        if (resetCharacters.contains(current)) {
+        if (currentStatus.needsToReset(current)) {
             sequencer = new StringBuilder();
-            currentStatus = BUILDING_KEYWORD;
+            currentStatus = AnalysisStatus.BUILDING_KEYWORD;
         } else {
             sequencer.append(current);
             if (current.equals('(')) {
-                currentStatus = PARAMETERS_REACHED;
+                currentStatus = AnalysisStatus.PARAMETERS_REACHED;
             }
         }
     }
 
     private void checkForParameterEnd(Character current) {
-        if (resetCharacters.contains(current)) {
+        if (currentStatus.needsToReset(current)) {
             sequencer = new StringBuilder();
-            currentStatus = BUILDING_KEYWORD;
+            currentStatus = AnalysisStatus.BUILDING_KEYWORD;;
         } else {
+            // in this status, we already have an open parenthesis for the parameters.
+            // If there is another one, we are dealing with annotations inside
             sequencer.append(current);
-            if (current.equals(')')) {
+            if (current.equals(OPEN_PARENTHESIS)) {
+                paranthesisStack.add(current);
+            }
+            else if (current.equals(CLOSE_PARENTHESIS) && !paranthesisStack.isEmpty()) {
+                paranthesisStack.pollLast();
+            }
+            else if (current.equals(CLOSE_PARENTHESIS)){
                 count ++;
-                currentStatus = BUILDING_KEYWORD;
+                currentStatus = AnalysisStatus.BUILDING_KEYWORD;;
                 result.add(sequencer.toString());
+                sequencer = new StringBuilder();
             }
         }
     }

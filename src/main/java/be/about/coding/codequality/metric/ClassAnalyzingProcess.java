@@ -32,7 +32,7 @@ public class ClassAnalyzingProcess {
             BufferedReader classReader = new BufferedReader(new FileReader(classFile));
             String line = classReader.readLine();
             while (line != null) {
-                line += "\n";
+                line += "\n"; //this is for working with annotations. The buffered reader doesn't pass line separators
                 //This action is not really on its place here, but ok...
                 lineCount++;
                 analyseLine(line);
