@@ -16,24 +16,24 @@ import java.util.Map;
 class RegistratorTest {
 
     private Path testPath;
-    private Registrator registrator;
+    private CodebaseMapping registrator;
     private String testName = "test";
 
     @BeforeEach
     public void setup(@Mock Snapshot snapshot) {
         testPath = Paths.get("src", "test", "resources", "test");
-        registrator = new Registrator(snapshot);
+        registrator = new CodebaseMapping(snapshot);
     }
 
     @Test
     public void registratorShouldRegisterAllPackages() {
-        Map<String, List<String>> registry = registrator.register(testName, testPath.toFile());
+        Map<String, List<String>> registry = registrator.start(testName, testPath.toFile());
         Assertions.assertEquals(2, registry.keySet().size());
     }
 
     @Test
     public void registratorShouldRegisterAllClasses() {
-        Map<String, List<String>> registry = registrator.register(testName, testPath.toFile());
+        Map<String, List<String>> registry = registrator.start(testName, testPath.toFile());
 
         Assertions.assertTrue(registry.values().stream()
         .map(List::size)

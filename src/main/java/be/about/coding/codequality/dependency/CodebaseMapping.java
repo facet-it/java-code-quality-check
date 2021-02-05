@@ -13,17 +13,17 @@ import java.util.stream.Stream;
 
 @Component
 @Scope("prototype")
-class Registrator {
+class CodebaseMapping {
 
     private Map<String, List<String>> registry = new HashMap<>();
 
     private Snapshot snapshot;
 
-    public Registrator(Snapshot snapshot) {
+    public CodebaseMapping(Snapshot snapshot) {
         this.snapshot = snapshot;
     }
 
-    public Map<String, List<String>> register(String codebase, File currentPackage) {
+    public Map<String, List<String>> start(String codebase, File currentPackage) {
         walkthrough(currentPackage);
         snapshot.make(codebase, registry);
         return registry;

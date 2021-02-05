@@ -11,19 +11,16 @@ import java.util.Map;
 
 import be.about.coding.codequality.dependency.Analysis;
 import be.about.coding.codequality.dependency.entity.DependencyAnalysis;
-import be.about.coding.codequality.metric.ClassAnalyzingProcess;
-import be.about.coding.codequality.metric.entity.ClassMetrics;
 import be.about.coding.codequality.persistence.memory.QualityRepository;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/codebases")
+@RequestMapping("/analysis")
 @AllArgsConstructor
-public class QualityApi {
+public class DependencyAnalysisApi {
 
-    private QualityRepository qualityRepository;
-    private Analysis codebaseCheck;
-    private ClassAnalyzingProcess classAnalyzingProcess;
+    private final QualityRepository qualityRepository;
+    private final Analysis codebaseCheck;
 
     @PostMapping("/")
     public ResponseEntity<Map<String, Map<String, List<String>>>> startQualityCheckFor(String codebasePath, String codebaseName) {
@@ -36,9 +33,4 @@ public class QualityApi {
         return new ResponseEntity(analysis, HttpStatus.OK);
     }
 
-    @PostMapping("/class/metrics")
-    public ResponseEntity<ClassMetrics> analyseClass(String className) {
-        ClassMetrics metrics = classAnalyzingProcess.analyze(className);
-        return new ResponseEntity<>(metrics, HttpStatus.OK);
-    }
 }
