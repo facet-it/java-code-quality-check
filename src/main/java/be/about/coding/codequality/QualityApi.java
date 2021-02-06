@@ -13,7 +13,6 @@ import be.about.coding.codequality.dependency.Analysis;
 import be.about.coding.codequality.dependency.entity.DependencyAnalysis;
 import be.about.coding.codequality.metric.ClassAnalyzingProcess;
 import be.about.coding.codequality.metric.entity.ClassMetrics;
-import be.about.coding.codequality.persistence.memory.QualityRepository;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -21,7 +20,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class QualityApi {
 
-    private QualityRepository qualityRepository;
     private Analysis codebaseCheck;
     private ClassAnalyzingProcess classAnalyzingProcess;
 
@@ -30,7 +28,6 @@ public class QualityApi {
         CodeBaseValidator validator = new CodeBaseValidator();
         validator.validateCodeBase(codebasePath);
 
-        qualityRepository.addCodebase(codebaseName);
         DependencyAnalysis analysis = codebaseCheck.startCodebaseCheck(codebasePath, codebaseName);
 
         return new ResponseEntity(analysis, HttpStatus.OK);

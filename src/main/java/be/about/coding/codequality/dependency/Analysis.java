@@ -27,14 +27,15 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Analysis {
 
-    private static String CODE_BASE_DIRECTORY = "src/main/java";
+    //private static String CODE_BASE_DIRECTORY = "src/main/java";
 
     private ObjectFactory<CodebaseMapping> codebaseMappingFactory;
     private ObjectFactory<DependencyAnalyser> analyserFactory;
 
     public DependencyAnalysis startCodebaseCheck(String codebasePath, String codebaseName) {
         CodebaseMapping mapping = codebaseMappingFactory.getObject();
-        File startDirectory = Path.of(codebasePath, CODE_BASE_DIRECTORY).toFile();
+        //File startDirectory = Path.of(codebasePath, CODE_BASE_DIRECTORY).toFile();
+        File startDirectory = Path.of(codebasePath).toFile();
         Map<String, List<String>> registry = mapping.start(codebaseName, startDirectory);
 
         DependencyAnalyser analyser = analyserFactory.getObject();
