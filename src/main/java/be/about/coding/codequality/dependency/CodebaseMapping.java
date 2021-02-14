@@ -15,9 +15,10 @@ import java.util.stream.Stream;
 @Scope("prototype")
 class CodebaseMapping {
 
-    private Map<String, List<String>> registry = new HashMap<>();
-
-    private Snapshot snapshot;
+    private final List<String> ignoredDirectories = List.of("/src/test",
+                                                            "/target");
+    private final Map<String, List<String>> registry = new HashMap<>();
+    private final Snapshot snapshot;
 
     public CodebaseMapping(Snapshot snapshot) {
         this.snapshot = snapshot;
@@ -31,7 +32,7 @@ class CodebaseMapping {
 
     //recursive method, i think this is the best way of registering
     private void walkthrough(File currentPackage) {
-        if (currentPackage.list() != null) {
+        if (currentPackage.list() != null && isNotIgnored(currentPackage)) {
             File[] files = currentPackage.listFiles();
 
             registerActualFiles(currentPackage, files);
@@ -44,6 +45,15 @@ class CodebaseMapping {
                 walkthrough(directory);
             }
         }
+    }
+
+    private boolean isNotIgnored(File currentPackage) {
+        for (String ignored : ignoredDirectories) {
+            if (currentPackage.toString().endsWith(ignored)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void registerActualFiles(File currentPackage, File[] fileList) {

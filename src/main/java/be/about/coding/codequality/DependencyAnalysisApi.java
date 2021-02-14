@@ -14,6 +14,9 @@ import java.util.Map;
 import be.about.coding.codequality.dependency.Analysis;
 import be.about.coding.codequality.dependency.entity.Dependency;
 import be.about.coding.codequality.dependency.entity.DependencyAnalysis;
+import be.about.coding.codequality.dependency.entity.DependencyAnalysisProjection;
+import be.about.coding.codequality.dependency.query.DependencySummary;
+import be.about.coding.codequality.dependency.query.OutgoingAnalysis;
 import be.about.coding.codequality.persistence.dependency.DependencyAnalysisRepository;
 import lombok.AllArgsConstructor;
 
@@ -24,6 +27,7 @@ public class DependencyAnalysisApi {
 
     private final Analysis analysis;
     private final DependencyAnalysisRepository dependencyAnalysisRepository;
+    private final OutgoingAnalysis outgoingAnalysis;
 
     @PostMapping("/")
     public ResponseEntity<Dependency> startQualityCheckFor(String codebasePath, String codebaseName) {
@@ -42,6 +46,19 @@ public class DependencyAnalysisApi {
             return new ResponseEntity<>(new DependencyAnalysis(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(latestAnalysis, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<DependencyAnalysisProjection>> getAllExectutedAnalysis() {
+        List<DependencyAnalysisProjection> executed = dependencyAnalysisRepository.getAllExecutedAnalysis();
+        return new ResponseEntity<>(executed, HttpStatus.OK);
+    }
+
+    @GetMapping("/{analysisid}/outgoing/{classname}")
+    public ResponseEntity<DependencySummary> getOutgoingDependenciesFor(@PathVariable("analysisid") long analysisId,
+                                                                                         @PathVariable("classname") String classname) {
+        DependencySummary outgoingSummary = outgoingAnalysis.analyseOutGoingDependenciesFor(analysisId, classname);
+        return new ResponseEntity<>(outgoingSummary, HttpStatus.OK);
     }
 
 }
