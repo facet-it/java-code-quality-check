@@ -9,7 +9,9 @@ import lombok.Value;
 @AllArgsConstructor
 public class Dependency {
 
-    String source;
-    String target;
+    String sourceName;
+    String targetName;
+    int source;
+    int target;
 
 }

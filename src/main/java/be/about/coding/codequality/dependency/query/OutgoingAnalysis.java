@@ -20,11 +20,18 @@ public class OutgoingAnalysis {
     }
 
     private DependencySummary createOutgoingAnalysis(String classname, List<OutgoingDependencyProjection> dependencies) {
-        DependencySummary dependencySummary = new DependencySummary(classname);
-        dependencies.forEach(dependency -> dependencySummary.addNode(dependency.getOutgoing()));
+        DependencySummary dependencySummary = new DependencySummary(toNode(classname));
+        dependencies.forEach(dependency -> dependencySummary.addNode(toNode(dependency.getOutgoing())));
         dependencies.forEach(dependency -> dependencySummary.addLink(dependency.getCurrent(), dependency.getOutgoing()));
 
         return dependencySummary;
+    }
+
+    private Node toNode(String classname) {
+        String[] packages = classname.split("\\.");
+        String name = packages[packages.length -1];
+
+        return new Node(name, classname);
     }
 
 }

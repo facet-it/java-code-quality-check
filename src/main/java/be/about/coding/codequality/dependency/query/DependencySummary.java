@@ -8,27 +8,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DependencySummary {
 
-    private List<String> nodes = new LinkedList<>();
+    private List<Node> nodes = new LinkedList<>();
     private List<Dependency> links = new LinkedList<>();
+    private List<String> names = new LinkedList<>();
 
     /**
      * This constructor takes the target from which we want the dependency summary
      * @param originalTarget class for which we want the dependency summary
      */
-    public DependencySummary(String originalTarget) {
-        this.nodes.add(originalTarget);
+    public DependencySummary(Node originalTarget) {
+        this.addNode(originalTarget);
     }
 
-    public void addNode(String classname) {
-        this.nodes.add(classname);
+    public void addNode(Node node) {
+        this.names.add(node.getWithPackage());
+        this.nodes.add(node);
     }
 
     public void addLink(String source, String target) {
-        Dependency dependency = new Dependency(source, target);
+        int sourceIndex = this.names.indexOf(source);
+        int targetIndex = this.names.indexOf(target);
+        Dependency dependency = new Dependency(source, target, sourceIndex, targetIndex);
         this.links.add(dependency);
     }
 
-    public List<String> getNodes() {
+    public List<Node> getNodes() {
         return new LinkedList<>(nodes);
     }
 

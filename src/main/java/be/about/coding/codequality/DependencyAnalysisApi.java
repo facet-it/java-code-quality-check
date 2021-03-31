@@ -2,6 +2,7 @@ package be.about.coding.codequality;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ public class DependencyAnalysisApi {
     private final DependencyAnalysisRepository dependencyAnalysisRepository;
     private final OutgoingAnalysis outgoingAnalysis;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/")
     public ResponseEntity<Dependency> startQualityCheckFor(String codebasePath, String codebaseName) {
         CodeBaseValidator validator = new CodeBaseValidator();
@@ -39,6 +41,7 @@ public class DependencyAnalysisApi {
         return new ResponseEntity(analysis, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{codebaseName}")
     public ResponseEntity<DependencyAnalysis> getLatestDependencyAnalysisFor(@PathVariable String codebaseName) {
         DependencyAnalysis latestAnalysis = dependencyAnalysisRepository.getLatestDependencyAnalysis(codebaseName);
@@ -48,12 +51,14 @@ public class DependencyAnalysisApi {
         return new ResponseEntity<>(latestAnalysis, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping()
     public ResponseEntity<List<DependencyAnalysisProjection>> getAllExectutedAnalysis() {
         List<DependencyAnalysisProjection> executed = dependencyAnalysisRepository.getAllExecutedAnalysis();
         return new ResponseEntity<>(executed, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{analysisid}/outgoing/{classname}")
     public ResponseEntity<DependencySummary> getOutgoingDependenciesFor(@PathVariable("analysisid") long analysisId,
                                                                                          @PathVariable("classname") String classname) {
